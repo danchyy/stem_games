@@ -43,7 +43,8 @@ def post_method(problem_id, submission_id, solution):
     while error:
         response = requests.post(url=url, params=params, headers=headers)
         error = "error" in response.json()
-
+        print(response.text)
+        sleep(2.5)
     print("=========================")
     print("POST RESPONSE")
     print(response.text)
@@ -51,7 +52,7 @@ def post_method(problem_id, submission_id, solution):
 def loop(problem_id):
     counter = 0
     while True:
-        sleep(0.1)
+        sleep(2.5)
         json_data = get_method(problem_id)
         if "error" in json_data:
             continue
