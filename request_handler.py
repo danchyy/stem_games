@@ -29,13 +29,16 @@ def post_method(problem_id, submission_id, solution):
     url += problem_id + "/" + submission_id
     params = {"data" : solution}
     response = requests.post(url=url, params=params, headers=headers)
-    if not "error" in response.json():
-        print(response.text)
+    #if not "error" in response.json():
+    print(response.text)
 
 def loop(problem_id):
-    json_data = get_method(problem_id)
-    output, submission_id = work_task_pillars(json_data)
-    post_method(problem_id=problem_id, submission_id=submission_id, solution=output)
+    while True:
+        json_data = get_method(problem_id)
+        if "error" in json_data:
+            continue
+        output, submission_id = work_task_pillars(json_data)
+        post_method(problem_id=problem_id, submission_id=submission_id, solution=output)
 
 if __name__ == '__main__':
     loop(problem_id="4292bf95-9793-48b5-9576-daa6d2685e20")
