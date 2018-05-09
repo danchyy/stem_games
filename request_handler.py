@@ -7,6 +7,8 @@ headers = {
     "Content-type": "text/plain"
 }
 
+sleep_period = 1
+
 
 def get_method(problem_id):
     url = "https://tech.stemgames.hr/api/competitive/v1/"
@@ -51,7 +53,8 @@ def post_method(problem_id, submission_id, solution):
         print("POST RESPONSE")
         print("Response text: ", end="")
         print(response.text)
-        sleep(2)
+        global sleep_period
+        sleep(sleep_period)
     print("=========================")
     print("\n\n")
 
@@ -62,7 +65,8 @@ def loop(problem_id, solution_method):
         counter += 1
         print("CURRENT LOOP: " + str(counter))
         json_data = get_method(problem_id)
-        sleep(2)
+        global sleep_period
+        sleep(sleep_period)
         if "error" in json_data:
             continue
         output, submission_id = work_task(json_data, get_solution_method=solution_method)
