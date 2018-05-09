@@ -2,10 +2,12 @@ import requests
 from task_pillars.pillars import get_solution
 from time import sleep
 
+
 headers = {
     "Authorization": "token 5Jx2jthg8uTMUyRK6FoRYagfvEow6wNo",
     "Content-type": "text/plain"
 }
+
 
 def get_method(problem_id):
     url = "https://tech.stemgames.hr/api/competitive/v1/"
@@ -21,6 +23,7 @@ def get_method(problem_id):
     print("=========================\n")
     return response.json()
 
+
 def work_task_pillars(json_data):
     """
 
@@ -32,10 +35,10 @@ def work_task_pillars(json_data):
     output = get_solution(string)
     return output, submission_id
 
+
 def post_method(problem_id, submission_id, solution):
     url = "https://tech.stemgames.hr/api/competitive/v1/"
     url += problem_id + "/" + submission_id
-    params = {"data" : solution}
     print("=========================")
     print("POST REQUEST")
     print("url: " + url)
@@ -53,6 +56,7 @@ def post_method(problem_id, submission_id, solution):
     print("=========================")
     print("\n\n")
 
+
 def loop(problem_id):
     counter = 0
     while True:
@@ -64,6 +68,7 @@ def loop(problem_id):
             continue
         output, submission_id = work_task_pillars(json_data)
         post_method(problem_id=problem_id, submission_id=submission_id, solution=output)
+
 
 if __name__ == '__main__':
     loop(problem_id="4292bf95-9793-48b5-9576-daa6d2685e20")
