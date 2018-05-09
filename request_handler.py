@@ -1,7 +1,7 @@
 import argparse
 import requests
-from task_pillars.pillars import get_solution
 from time import sleep
+import importlib
 
 headers = {
     "Content-type": "text/plain"
@@ -23,7 +23,7 @@ def get_method(problem_id):
     return response.json()
 
 
-def work_task_pillars(json_data):
+def work_task(json_data, get_solution_method):
     """
 
     :param json_data:
@@ -31,7 +31,7 @@ def work_task_pillars(json_data):
     """
     submission_id = json_data["submission_id"]
     string = json_data["input"]
-    output = get_solution(string)
+    output = get_solution_method(string)
     return output, submission_id
 
 
@@ -56,7 +56,7 @@ def post_method(problem_id, submission_id, solution):
     print("\n\n")
 
 
-def loop(problem_id):
+def loop(problem_id, solution_method):
     counter = 0
     while True:
         counter += 1
@@ -65,7 +65,7 @@ def loop(problem_id):
         sleep(2)
         if "error" in json_data:
             continue
-        output, submission_id = work_task_pillars(json_data)
+        output, submission_id = work_task(json_data, get_solution_method=solution_method)
         post_method(problem_id=problem_id, submission_id=submission_id, solution=output)
 
 
@@ -77,10 +77,20 @@ if __name__ == '__main__':
     parser.add_argument('--problem', '-p',
                         required=True,
                         help='Problem id')
+    parser.add_argument('--task', required=True, help="Name of the task where the script is located")
 
+    # Getting arguments
     args = parser.parse_args()
+    script_name = args.task
+    method_name = "get_solution"
+    task_package = "task_" + args.task
+
+    # Importing the module from string
+    pillars_module = importlib.import_module(task_package + "." + script_name)
+    # Retrieving the method from module
+    method = getattr(pillars_module, method_name)
 
     # Add api key to header
     headers["Authorization"] = "token " + args.api
 
-    loop(problem_id=args.problem)
+    loop(problem_id=args.problem, solution_method=method)
