@@ -3,20 +3,22 @@ from task_pillars.pillars import get_solution
 from time import sleep
 
 headers = {
-    "Authorization" : "token 5Jx2jthg8uTMUyRK6FoRYagfvEow6wNo"
+    "Authorization": "token 5Jx2jthg8uTMUyRK6FoRYagfvEow6wNo",
+    "Content-type": "text/plain"
 }
 
 def get_method(problem_id):
     url = "https://tech.stemgames.hr/api/competitive/v1/"
     url += problem_id
-    print("=========================")
     print("GET REQUEST")
     print("url: " + url)
     print(headers)
     response = requests.get(url=url, headers=headers)
     print("=========================")
     print("GET RESPONSE")
+    print("Response text: ", end="")
     print(response.text)
+    print("=========================\n")
     return response.json()
 
 def work_task_pillars(json_data):
@@ -38,27 +40,30 @@ def post_method(problem_id, submission_id, solution):
     print("POST REQUEST")
     print("url: " + url)
     print(headers)
-    print(params)
+    print('SENT SOLUTION: "' + solution + '"')
     error = True
     while error:
-        response = requests.post(url=url, params=params, headers=headers)
+        response = requests.post(url=url, data=solution, headers=headers)
         error = "error" in response.json()
         print("=========================")
         print("POST RESPONSE")
+        print("Response text: ", end="")
         print(response.text)
-        sleep(2.1)
+        sleep(2)
+    print("=========================")
+    print("\n\n")
 
 def loop(problem_id):
     counter = 0
     while True:
+        counter += 1
+        print("CURRENT LOOP: " + str(counter))
         json_data = get_method(problem_id)
-        sleep(2.1)
+        sleep(2)
         if "error" in json_data:
             continue
         output, submission_id = work_task_pillars(json_data)
         post_method(problem_id=problem_id, submission_id=submission_id, solution=output)
-        counter += 1
-        print("CURRENT LOOP: " + str(counter))
 
 if __name__ == '__main__':
     loop(problem_id="4292bf95-9793-48b5-9576-daa6d2685e20")
