@@ -1,7 +1,7 @@
 import argparse
 import requests
 from task_pillars.pillars import get_solution
-from time import sleep
+from time import sleep, time
 
 headers = {
     "Content-type": "text/plain"
@@ -11,6 +11,7 @@ headers = {
 def get_method(problem_id):
     url = "https://tech.stemgames.hr/api/competitive/v1/"
     url += problem_id
+    print("=========================")
     print("GET REQUEST")
     print("url: " + url)
     print(headers)
@@ -19,7 +20,7 @@ def get_method(problem_id):
     print("GET RESPONSE")
     print("Response text: ", end="")
     print(response.text)
-    print("=========================\n")
+    print("=========================")
     return response.json()
 
 
@@ -51,22 +52,22 @@ def post_method(problem_id, submission_id, solution):
         print("POST RESPONSE")
         print("Response text: ", end="")
         print(response.text)
-        sleep(2)
+        sleep(1)
     print("=========================")
-    print("\n\n")
-
 
 def loop(problem_id):
     counter = 0
     while True:
+        start = time()
         counter += 1
         print("CURRENT LOOP: " + str(counter))
         json_data = get_method(problem_id)
-        sleep(2)
+        sleep(1)
         if "error" in json_data:
             continue
         output, submission_id = work_task_pillars(json_data)
         post_method(problem_id=problem_id, submission_id=submission_id, solution=output)
+        print("TIME: {}\n\n".format(time() - start))
 
 
 if __name__ == '__main__':
