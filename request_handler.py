@@ -1,10 +1,9 @@
+import argparse
 import requests
 from task_pillars.pillars import get_solution
 from time import sleep
 
-
 headers = {
-    "Authorization": "token 5Jx2jthg8uTMUyRK6FoRYagfvEow6wNo",
     "Content-type": "text/plain"
 }
 
@@ -71,4 +70,17 @@ def loop(problem_id):
 
 
 if __name__ == '__main__':
-    loop(problem_id="4292bf95-9793-48b5-9576-daa6d2685e20")
+    parser = argparse.ArgumentParser(description='Arguments for request/response handling.')
+    parser.add_argument('--api', '-a',
+                        required=True,
+                        help='Team\'s API key')
+    parser.add_argument('--problem', '-p',
+                        required=True,
+                        help='Problem id')
+
+    args = parser.parse_args()
+
+    # Add api key to header
+    headers["Authorization"] = "token " + args.api
+
+    loop(problem_id=args.problem)
