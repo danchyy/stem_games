@@ -8,7 +8,7 @@ headers = {
     "Content-type": "text/plain"
 }
 
-sleep_period = 1
+sleep_period = 0.84375
 
 
 def get_method(problem_id):
