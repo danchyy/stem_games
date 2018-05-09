@@ -11,8 +11,7 @@ headers = {
 sleep_period = 0.84375
 
 task_problem_id_dict = {
-    "pillars": "4292bf95-9793-48b5-9576-daa6d2685e20",
-    "bla": "4292bf95-9793-48b5-9576-daa6d2685e20"
+    "pillars": "4292bf95-9793-48b5-9576-daa6d2685e20"
 }
 
 
@@ -143,19 +142,10 @@ if __name__ == '__main__':
     parser.add_argument('--problem', '-p',
                         required=True,
                         help='Problem id')
-    parser.add_argument('--task', required=True, help="Name of the task where the script is located")
 
     # Getting arguments
     args = parser.parse_args()
-    script_name = args.task
-    method_name = "get_solution"
-    task_package = "task_" + args.task
-
-    # Importing the module from string
-    pillars_module = importlib.import_module(task_package + "." + script_name)
-    # Retrieving the method from module
-    method = getattr(pillars_module, method_name)
-
+    
     # Add api key to header
     headers["Authorization"] = "token " + args.api
 
