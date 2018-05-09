@@ -8,7 +8,14 @@ headers = {
 def get_method(problem_id):
     url = "https://tech.stemgames.hr/api/competitive/v1/"
     url += problem_id
+    print("=========================")
+    print("GET REQUEST")
+    print("url: " + url)
+    print(headers)
     response = requests.get(url=url, headers=headers)
+    print("=========================")
+    print("POST RESPONSE")
+    print(response.text)
     if not "error" in response.json():
         print(response.text)
     return response.json()
@@ -28,8 +35,14 @@ def post_method(problem_id, submission_id, solution):
     url = "https://tech.stemgames.hr/api/competitive/v1/"
     url += problem_id + "/" + submission_id
     params = {"data" : solution}
+    print("=========================")
+    print("POST REQUEST")
+    print("url: " + url)
+    print(headers)
+    print(params)
     response = requests.post(url=url, params=params, headers=headers)
-    #if not "error" in response.json():
+    print("=========================")
+    print("POST RESPONSE")
     print(response.text)
 
 def loop(problem_id):
