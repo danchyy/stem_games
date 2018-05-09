@@ -52,8 +52,8 @@ def post_method(problem_id, submission_id, solution):
 def loop(problem_id):
     counter = 0
     while True:
-        sleep(2.5)
         json_data = get_method(problem_id)
+        sleep(2.5)
         if "error" in json_data:
             continue
         output, submission_id = work_task_pillars(json_data)
