@@ -53,9 +53,9 @@ def get_solution(string):
             else:
                 dp[i][j] = max(dp[i-1][j], dp[i-1][j - group_weights[i]] + group_people_count[i])
 
-    print(groups)
-    print(group_weights)
-    print(group_people_count)
+    # print(groups)
+    # print(group_weights)
+    # print(group_people_count)
 
     return str(dp[len(groups)-1][m])
 
