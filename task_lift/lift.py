@@ -12,11 +12,11 @@ def bfs(graph, start):
 
 def get_solution(string):
     lines = string.split('\n')
-    n, m = lines[0].split(' ')
-    n, m = int(n), int(m)
-    weights = lines[1].split(' ')
+    n = int(lines[0])
+    m = int(lines[1])
+    weights = lines[2].split(' ')
     people = {}
-    for i, line in enumerate(lines[2:]):
+    for i, line in enumerate(lines[3:]):
         likes = [int(x) for x in line.split(' ')[1:]]
         if i in people:
             people[i].update(likes)
@@ -45,18 +45,20 @@ def get_solution(string):
         group_weights.append(group_weight)
         visited.update(group)
 
-    total_weight = 0
-    dp = {}
-    dp = [[0 for x in range(m)] for y in range(len(groups))]
-    for i in range(1, len(groups)):
-        for j in range(m):
+    dp = [[0 for x in range(m+1)] for y in range(len(groups))]
+    for i in range(0, len(groups)):
+        for j in range(m+1):
             if group_weights[i] > j:
                 dp[i][j] = dp[i - 1][j]
             else:
                 dp[i][j] = max(dp[i-1][j], dp[i-1][j - group_weights[i]] + group_people_count[i])
 
-    print(str(dp[len(groups) - 1][m-1]))
+    print(groups)
+    print(group_weights)
+    print(group_people_count)
+
+    return str(dp[len(groups)-1][m])
 
 
 if __name__ == '__main__':
-    get_solution("5 5\n1 1 1 1 1\n1 1\n0\n0 1\n0\n0")
+    print(get_solution("28\n284\n140 65 149 18 75 174 87 94 8 70 136 51 41 169 182 106 141 127 9 17 108 107 89 181 86 159 111 195\n0\n0\n0\n1 4\n1 3\n1 6\n2 5 24\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n2 6 5\n0\n0\n0"))
