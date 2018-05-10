@@ -78,6 +78,7 @@ def post_method(problem_id, submission_id, solution):
         #sleep(sleep_period)
     print("=========================")
     print("\n\n")
+    return response.json()
 
 
 def get_get_solution_method(task_name):
@@ -130,8 +131,11 @@ def loop():
             problem_id, solution_method = get_problem_id_and_method()
         json_data = try_get(problem_id)
         output, submission_id = work_task(json_data, get_solution_method=solution_method)
-        post_method(problem_id=problem_id, submission_id=submission_id, solution=output)
-
+        response_json = post_method(problem_id=problem_id, submission_id=submission_id, solution=output)
+        status = response_json ["status"]
+        if status != "correct":
+            with open("log.txt", "a") as myfile:
+                myfile.write("FAIL, COUNTER: " + str(counter) + "\n")
         print("TIME: {}\n\n".format(time() - start))
 
 
