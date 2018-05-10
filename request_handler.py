@@ -12,7 +12,8 @@ headers = {
 
 task_problem_id_dict = {
     # "pillars": "4292bf95-9793-48b5-9576-daa6d2685e20"
-    "faulty_rocket": "fec8307a-488d-4f24-88b5-97f47db80207"
+    #"faulty_rocket": "fec8307a-488d-4f24-88b5-97f47db80207"
+    "lift": "b48f2290-e98d-4363-ba00-e913b623a565"
 }
 
 
@@ -21,23 +22,23 @@ def try_get(problem_id):
     url = "https://tech.stemgames.hr/api/competitive/v1/"
     url += problem_id
     while error:
-        print("GET REQUEST")
-        print("url: " + url)
-        print(headers)
+        #print("GET REQUEST")
+        #print("url: " + url)
+        #print(headers)
         response = requests.get(url=url, headers=headers)
         #sleep(sleep_period)
-        print("=========================")
-        print("GET RESPONSE")
-        print("Response text: ", end="")
-        print(response.text)
+        #print("=========================")
+        #print("GET RESPONSE")
+        #print("Response text: ", end="")
+        #print(response.text)
         json_data = {}
         try:
             json_data = response.json()
         except Exception:
-            print("No json in response")
+            #print("No json in response")
             continue
         error = "error" in json_data
-        print("=========================\n")
+        #print("=========================\n")
     return json_data
 
 
@@ -56,11 +57,11 @@ def work_task(json_data, get_solution_method):
 def post_method(problem_id, submission_id, solution):
     url = "https://tech.stemgames.hr/api/competitive/v1/"
     url += problem_id + "/" + submission_id
-    print("=========================")
-    print("POST REQUEST")
-    print("url: " + url)
-    print(headers)
-    print('SENT SOLUTION: "' + solution + '"')
+    #print("=========================")
+    #print("POST REQUEST")
+    #print("url: " + url)
+    #print(headers)
+    #print('SENT SOLUTION: "' + solution + '"')
     error = True
     while error:
         response = requests.post(url=url, data=solution, headers=headers)
@@ -68,16 +69,16 @@ def post_method(problem_id, submission_id, solution):
         try:
             json_data = response.json()
         except Exception:
-            print("No json in response")
+            #print("No json in response")
             continue
         error = "error" in json_data
-        print("=========================")
-        print("POST RESPONSE")
-        print("Response text: ", end="")
-        print(response.text)
+        #print("=========================")
+        #print("POST RESPONSE")
+        #print("Response text: ", end="")
+        #print(response.text)
         #sleep(sleep_period)
-    print("=========================")
-    print("\n\n")
+    #print("=========================")
+    #print("\n\n")
     return response.json()
 
 
@@ -104,39 +105,42 @@ def determine_solving_task():
         problem_id = task_problem_id_dict[key]
         response_for_problem = try_get(problem_id=problem_id)
         available_points = response_for_problem["points_if_correct"]
-        print("AVAILABLE POINTS: " + str(available_points) + " FOR KEY: " + key)
+        #print("AVAILABLE POINTS: " + str(available_points) + " FOR KEY: " + key)
         if max_points is None or available_points > max_points:
             max_points = available_points
             max_key = key
 
-    print("BEST TASK IS: " + max_key + " WITH " + str(max_points))
+    #print("BEST TASK IS: " + max_key + " WITH " + str(max_points))
     return max_key
 
 
 def get_problem_id_and_method():
-    best_task_name = determine_solving_task()
-    problem_id = task_problem_id_dict[best_task_name]
-    get_solution_method = get_get_solution_method(best_task_name)
+    #best_task_name = determine_solving_task()
+    problem_id = task_problem_id_dict["faulty_rocket"]
+    get_solution_method = get_get_solution_method("faulty_rocket")
     return problem_id, get_solution_method
 
 
 def loop():
     counter = 0
-    problem_id, solution_method = get_problem_id_and_method()
+    problem = "lift"
+    problem_id = task_problem_id_dict[problem]
+    solution_method = get_get_solution_method(problem)
     while True:
         start = time()
         counter += 1
-        print("CURRENT LOOP: " + str(counter))
-        if counter % 10 == 0:
-            problem_id, solution_method = get_problem_id_and_method()
+        #print("CURRENT LOOP: " + str(counter))
         json_data = try_get(problem_id)
-        output, submission_id = work_task(json_data, get_solution_method=solution_method)
+        try:
+            output, submission_id = work_task(json_data, get_solution_method=solution_method)
+        except Exception:
+            continue
         response_json = post_method(problem_id=problem_id, submission_id=submission_id, solution=output)
         status = response_json ["status"]
         if status != "correct":
             with open("log.txt", "a") as myfile:
                 myfile.write("FAIL, COUNTER: " + str(counter) + "\n")
-        print("TIME: {}\n\n".format(time() - start))
+        #print("TIME: {}\n\n".format(time() - start))
 
 
 if __name__ == '__main__':
