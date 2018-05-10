@@ -8,7 +8,7 @@ headers = {
     "Content-type": "text/plain"
 }
 
-sleep_period = 0.84375
+sleep_period = 0.85
 
 task_problem_id_dict = {
     "pillars": "4292bf95-9793-48b5-9576-daa6d2685e20"
@@ -139,13 +139,10 @@ if __name__ == '__main__':
     parser.add_argument('--api', '-a',
                         required=True,
                         help='Team\'s API key')
-    parser.add_argument('--problem', '-p',
-                        required=True,
-                        help='Problem id')
 
     # Getting arguments
     args = parser.parse_args()
-    
+
     # Add api key to header
     headers["Authorization"] = "token " + args.api
 
