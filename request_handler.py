@@ -8,7 +8,7 @@ headers = {
     "Content-type": "text/plain"
 }
 
-sleep_period = 0.85
+#sleep_period = 0.005
 
 task_problem_id_dict = {
     "pillars": "4292bf95-9793-48b5-9576-daa6d2685e20"
@@ -24,7 +24,7 @@ def try_get(problem_id):
         print("url: " + url)
         print(headers)
         response = requests.get(url=url, headers=headers)
-        sleep(sleep_period)
+        #sleep(sleep_period)
         print("=========================")
         print("GET RESPONSE")
         print("Response text: ", end="")
@@ -74,7 +74,7 @@ def post_method(problem_id, submission_id, solution):
         print("POST RESPONSE")
         print("Response text: ", end="")
         print(response.text)
-        sleep(sleep_period)
+        #sleep(sleep_period)
     print("=========================")
     print("\n\n")
 
