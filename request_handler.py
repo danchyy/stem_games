@@ -8,10 +8,11 @@ headers = {
     "Content-type": "text/plain"
 }
 
-#sleep_period = 0.005
+# sleep_period = 2
 
 task_problem_id_dict = {
-    "pillars": "4292bf95-9793-48b5-9576-daa6d2685e20"
+    # "pillars": "4292bf95-9793-48b5-9576-daa6d2685e20"
+    "faulty_rocket": "fec8307a-488d-4f24-88b5-97f47db80207"
 }
 
 
