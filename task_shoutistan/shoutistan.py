@@ -3,7 +3,7 @@ from time import time
 def calculate_leading_zeros(number, target_zeros, is_exact=False):
     five_squared = 5
     amount_of_zeros = 0
-    while five_squared < number:
+    while five_squared <= number:
         amount_of_zeros += (number // five_squared)
         five_squared = five_squared * 5
     if is_exact:
@@ -33,9 +33,8 @@ def get_solution(string):
     else:
         return "-1"
 
-
 if __name__ == '__main__':
     start = time()
-    print(get_solution(23))
+    print(get_solution("1\n"))
     end = time()
     print(end - start)
